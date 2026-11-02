@@ -1,0 +1,214 @@
+<div class="moderation-page">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <h1>Product Moderation</h1>
+      <p>Review and manage seller product listings.</p>
+    </div>
+
+    <span class="page-label">📦 Product Review</span>
+  </div>
+
+  <!-- Statistics -->
+  <div class="stats-grid">
+
+    <div class="stat-card">
+      <p>Total Products</p>
+      <h2>{{ products.length }}</h2>
+    </div>
+
+    <div class="stat-card">
+      <p>Pending Products</p>
+      <h2 class="orange">{{ pendingCount }}</h2>
+    </div>
+
+    <div class="stat-card">
+      <p>Approved Products</p>
+      <h2 class="green">{{ approvedCount }}</h2>
+    </div>
+
+    <div class="stat-card">
+      <p>Rejected Products</p>
+      <h2 class="red">{{ rejectedCount }}</h2>
+    </div>
+
+  </div>
+
+  <!-- Product List -->
+  <div class="product-container">
+
+    <div class="section-heading">
+      <div>
+        <h2>All Product Listings</h2>
+        <p>Review products submitted by sellers.</p>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters">
+
+      <input
+        type="text"
+        placeholder="Search product or seller..."
+        [(ngModel)]="searchText"
+      >
+
+      <select [(ngModel)]="selectedCategory">
+        <option value="All">All Categories</option>
+        <option value="Electronics">Electronics</option>
+        <option value="Sports">Sports</option>
+        <option value="Fashion">Fashion</option>
+      </select>
+
+      <select [(ngModel)]="selectedStatus">
+        <option value="All">All Status</option>
+        <option value="Pending">Pending</option>
+        <option value="Approved">Approved</option>
+        <option value="Rejected">Rejected</option>
+      </select>
+
+    </div>
+
+    <!-- Product Cards -->
+    <div class="product-grid">
+
+      <div
+        class="product-card"
+        *ngFor="let product of filteredProducts"
+      >
+
+        <div class="product-image">
+          <img
+            [src]="product.image"
+            [alt]="product.name"
+          >
+        </div>
+
+        <div class="product-details">
+
+          <div class="product-heading">
+            <h3>{{ product.name }}</h3>
+
+            <span
+              class="status"
+              [ngClass]="product.status.toLowerCase()"
+            >
+              {{ product.status }}
+            </span>
+          </div>
+
+          <p class="seller">Seller: {{ product.seller }}</p>
+
+          <p class="category">
+            Category: {{ product.category }}
+          </p>
+
+          <h3 class="price">
+            ₹{{ product.price | number }}
+          </h3>
+
+          <div class="actions">
+
+            <button
+              class="view-btn"
+              (click)="viewProduct(product)"
+            >
+              View Details
+            </button>
+
+            <button
+              *ngIf="product.status === 'Pending'"
+              class="approve-btn"
+              (click)="approveProduct(product)"
+            >
+              Approve
+            </button>
+
+            <button
+              *ngIf="product.status === 'Pending'"
+              class="reject-btn"
+              (click)="rejectProduct(product)"
+            >
+              Reject
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div
+      class="empty-message"
+      *ngIf="filteredProducts.length === 0"
+    >
+      No products found.
+    </div>
+
+  </div>
+
+  <!-- Product Details Modal -->
+  <div class="modal-overlay" *ngIf="selectedProduct">
+
+    <div class="modal-content">
+
+      <button
+        class="close-btn"
+        (click)="closeDetails()"
+      >
+        ✕
+      </button>
+
+      <h2>Product Details</h2>
+
+      <img
+        [src]="selectedProduct.image"
+        [alt]="selectedProduct.name"
+      >
+
+      <h3>{{ selectedProduct.name }}</h3>
+
+      <p>{{ selectedProduct.description }}</p>
+
+      <p><strong>Seller:</strong> {{ selectedProduct.seller }}</p>
+
+      <p><strong>Category:</strong> {{ selectedProduct.category }}</p>
+
+      <p>
+        <strong>Starting Price:</strong>
+        ₹{{ selectedProduct.price | number }}
+      </p>
+
+      <p>
+        <strong>Status:</strong>
+        {{ selectedProduct.status }}
+      </p>
+
+      <div class="modal-actions">
+
+        <button
+          *ngIf="selectedProduct.status === 'Pending'"
+          class="approve-btn"
+          (click)="approveProduct(selectedProduct)"
+        >
+          Approve Product
+        </button>
+
+        <button
+          *ngIf="selectedProduct.status === 'Pending'"
+          class="reject-btn"
+          (click)="rejectProduct(selectedProduct)"
+        >
+          Reject Product
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

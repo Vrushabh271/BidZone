@@ -1,0 +1,226 @@
+<div class="auction-page">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <h1>Auction Monitoring</h1>
+      <p>Monitor and track all marketplace auctions.</p>
+    </div>
+
+    <span class="page-label">🔨 Auction Monitor</span>
+  </div>
+
+  <!-- Statistics -->
+  <div class="stats-grid">
+
+    <div class="stat-card">
+      <p>Total Auctions</p>
+      <h2>{{ totalAuctions }}</h2>
+    </div>
+
+    <div class="stat-card">
+      <p>Active Auctions</p>
+      <h2 class="green">{{ activeAuctions }}</h2>
+    </div>
+
+    <div class="stat-card">
+      <p>Upcoming Auctions</p>
+      <h2 class="orange">{{ upcomingAuctions }}</h2>
+    </div>
+
+    <div class="stat-card">
+      <p>Completed Auctions</p>
+      <h2 class="blue">{{ completedAuctions }}</h2>
+    </div>
+
+  </div>
+
+  <!-- Auction Table -->
+  <div class="auction-container">
+
+    <div class="section-heading">
+      <h2>All Auctions</h2>
+      <p>View auction details and current bidding information.</p>
+    </div>
+
+    <!-- Search and Filters -->
+    <div class="filters">
+
+      <input
+        type="text"
+        placeholder="Search product or seller..."
+        [(ngModel)]="searchText"
+      >
+
+      <select [(ngModel)]="selectedStatus">
+        <option value="All">All Status</option>
+        <option value="Active">Active</option>
+        <option value="Upcoming">Upcoming</option>
+        <option value="Completed">Completed</option>
+      </select>
+
+      <select [(ngModel)]="selectedCategory">
+        <option value="All">All Categories</option>
+        <option value="Electronics">Electronics</option>
+        <option value="Sports">Sports</option>
+        <option value="Fashion">Fashion</option>
+      </select>
+
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>Auction ID</th>
+            <th>Product</th>
+            <th>Seller</th>
+            <th>Category</th>
+            <th>Starting Price</th>
+            <th>Current Bid</th>
+            <th>End Date</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr *ngFor="let auction of filteredAuctions">
+
+            <td>#{{ auction.id }}</td>
+
+            <td>
+              <strong>{{ auction.productName }}</strong>
+            </td>
+
+            <td>{{ auction.seller }}</td>
+
+            <td>{{ auction.category }}</td>
+
+            <td>
+              ₹{{ auction.startingPrice | number }}
+            </td>
+
+            <td class="current-bid">
+              ₹{{ auction.currentBid | number }}
+            </td>
+
+            <td>
+              {{ auction.endDate | date:'dd MMM yyyy, hh:mm a' }}
+            </td>
+
+            <td>
+              <span
+                class="status"
+                [ngClass]="auction.status.toLowerCase()"
+              >
+                {{ auction.status }}
+              </span>
+            </td>
+
+            <td>
+              <button
+                class="view-btn"
+                (click)="viewAuction(auction)"
+              >
+                View
+              </button>
+            </td>
+
+          </tr>
+
+          <tr *ngIf="filteredAuctions.length === 0">
+            <td colspan="9" class="empty">
+              No auctions found.
+            </td>
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+  <!-- Auction Details Modal -->
+  <div class="modal-overlay" *ngIf="selectedAuction">
+
+    <div class="modal-content">
+
+      <button
+        class="close-btn"
+        (click)="closeDetails()"
+      >
+        ✕
+      </button>
+
+      <h2>Auction Details</h2>
+
+      <div class="detail-list">
+
+        <p>
+          <strong>Auction ID:</strong>
+          #{{ selectedAuction.id }}
+        </p>
+
+        <p>
+          <strong>Product:</strong>
+          {{ selectedAuction.productName }}
+        </p>
+
+        <p>
+          <strong>Seller:</strong>
+          {{ selectedAuction.seller }}
+        </p>
+
+        <p>
+          <strong>Category:</strong>
+          {{ selectedAuction.category }}
+        </p>
+
+        <p>
+          <strong>Starting Price:</strong>
+          ₹{{ selectedAuction.startingPrice | number }}
+        </p>
+
+        <p>
+          <strong>Current Highest Bid:</strong>
+          ₹{{ selectedAuction.currentBid | number }}
+        </p>
+
+        <p>
+          <strong>Highest Bidder:</strong>
+          {{ selectedAuction.highestBidder }}
+        </p>
+
+        <p>
+          <strong>Start Date:</strong>
+          {{ selectedAuction.startDate | date:'medium' }}
+        </p>
+
+        <p>
+          <strong>End Date:</strong>
+          {{ selectedAuction.endDate | date:'medium' }}
+        </p>
+
+        <p>
+          <strong>Status:</strong>
+          {{ selectedAuction.status }}
+        </p>
+
+      </div>
+
+      <button class="close-modal-btn" (click)="closeDetails()">
+        Close
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

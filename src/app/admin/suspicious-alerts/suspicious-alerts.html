@@ -1,0 +1,265 @@
+<div class="alerts-page">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <h1>Suspicious Activity Alerts</h1>
+      <p>Monitor unusual activities and review security alerts.</p>
+    </div>
+
+    <span class="page-label">⚠️ Security Monitoring</span>
+  </div>
+
+  <!-- Statistics -->
+  <div class="stats-grid">
+
+    <div class="stat-card">
+      <p>Total Alerts</p>
+      <h2>{{ totalAlerts }}</h2>
+    </div>
+
+    <div class="stat-card">
+      <p>High Risk</p>
+      <h2 class="high">{{ highRiskCount }}</h2>
+    </div>
+
+    <div class="stat-card">
+      <p>Medium Risk</p>
+      <h2 class="medium">{{ mediumRiskCount }}</h2>
+    </div>
+
+    <div class="stat-card">
+      <p>Low Risk</p>
+      <h2 class="low">{{ lowRiskCount }}</h2>
+    </div>
+
+  </div>
+
+  <!-- Review Statistics -->
+  <div class="review-summary">
+
+    <div>
+      <span class="summary-dot pending-dot"></span>
+      Pending Reviews:
+      <strong>{{ pendingCount }}</strong>
+    </div>
+
+    <div>
+      <span class="summary-dot reviewed-dot"></span>
+      Reviewed Alerts:
+      <strong>{{ reviewedCount }}</strong>
+    </div>
+
+  </div>
+
+  <!-- Alerts Container -->
+  <div class="alerts-container">
+
+    <div class="section-heading">
+      <div>
+        <h2>All Security Alerts</h2>
+        <p>Review suspicious marketplace activities.</p>
+      </div>
+    </div>
+
+    <!-- Search and Filters -->
+    <div class="filters">
+
+      <input
+        type="text"
+        placeholder="Search user or activity..."
+        [(ngModel)]="searchText"
+      >
+
+      <select [(ngModel)]="selectedSeverity">
+        <option value="All">All Severity</option>
+        <option value="High">High Risk</option>
+        <option value="Medium">Medium Risk</option>
+        <option value="Low">Low Risk</option>
+      </select>
+
+      <select [(ngModel)]="selectedStatus">
+        <option value="All">All Status</option>
+        <option value="Pending">Pending</option>
+        <option value="Reviewed">Reviewed</option>
+      </select>
+
+    </div>
+
+    <!-- Alerts Table -->
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>Alert ID</th>
+            <th>User</th>
+            <th>Activity</th>
+            <th>Auction ID</th>
+            <th>Severity</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr *ngFor="let alert of filteredAlerts">
+
+            <td>#{{ alert.id }}</td>
+
+            <td>
+              <strong>{{ alert.user }}</strong>
+            </td>
+
+            <td>{{ alert.activity }}</td>
+
+            <td>#{{ alert.auctionId }}</td>
+
+            <td>
+              <span
+                class="severity"
+                [ngClass]="alert.severity.toLowerCase()"
+              >
+                {{ alert.severity }}
+              </span>
+            </td>
+
+            <td>{{ alert.date }}</td>
+
+            <td>
+              <span
+                class="status"
+                [ngClass]="alert.status.toLowerCase()"
+              >
+                {{ alert.status }}
+              </span>
+            </td>
+
+            <td class="actions">
+
+              <button
+                class="view-btn"
+                (click)="viewAlert(alert)"
+              >
+                View
+              </button>
+
+              <button
+                *ngIf="alert.status === 'Pending'"
+                class="review-btn"
+                (click)="markReviewed(alert)"
+              >
+                Review
+              </button>
+
+              <button
+                *ngIf="alert.status === 'Reviewed'"
+                class="pending-btn"
+                (click)="markPending(alert)"
+              >
+                Reopen
+              </button>
+
+            </td>
+
+          </tr>
+
+          <tr *ngIf="filteredAlerts.length === 0">
+            <td colspan="8" class="empty">
+              No suspicious alerts found.
+            </td>
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+  <!-- Alert Details Modal -->
+  <div class="modal-overlay" *ngIf="selectedAlert">
+
+    <div class="modal-content">
+
+      <button
+        class="close-btn"
+        (click)="closeDetails()"
+      >
+        ✕
+      </button>
+
+      <h2>Alert Details</h2>
+
+      <div class="detail-list">
+
+        <p>
+          <strong>Alert ID:</strong>
+          #{{ selectedAlert.id }}
+        </p>
+
+        <p>
+          <strong>User:</strong>
+          {{ selectedAlert.user }}
+        </p>
+
+        <p>
+          <strong>Activity:</strong>
+          {{ selectedAlert.activity }}
+        </p>
+
+        <p>
+          <strong>Description:</strong>
+          {{ selectedAlert.description }}
+        </p>
+
+        <p>
+          <strong>Auction ID:</strong>
+          #{{ selectedAlert.auctionId }}
+        </p>
+
+        <p>
+          <strong>Severity:</strong>
+          {{ selectedAlert.severity }}
+        </p>
+
+        <p>
+          <strong>Date:</strong>
+          {{ selectedAlert.date }}
+        </p>
+
+        <p>
+          <strong>Status:</strong>
+          {{ selectedAlert.status }}
+        </p>
+
+      </div>
+
+      <div class="modal-actions">
+
+        <button
+          *ngIf="selectedAlert.status === 'Pending'"
+          class="review-btn"
+          (click)="markReviewed(selectedAlert)"
+        >
+          Mark as Reviewed
+        </button>
+
+        <button
+          class="close-modal-btn"
+          (click)="closeDetails()"
+        >
+          Close
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

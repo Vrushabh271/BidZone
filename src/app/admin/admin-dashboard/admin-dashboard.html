@@ -1,0 +1,166 @@
+
+<div class="admin-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+
+    <div class="brand">
+      <span class="brand-icon">🔨</span>
+      <h2>BidZone</h2>
+    </div>
+
+    <p class="menu-heading">MAIN MENU</p>
+
+    <nav class="sidebar-menu">
+
+      <a routerLink="/admin"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{exact:true}"
+         class="menu-item">
+        <span>📊</span> Dashboard
+      </a>
+
+      <a routerLink="/admin/users"
+         routerLinkActive="active"
+         class="menu-item">
+        <span>👥</span> User Management
+      </a>
+
+      <a routerLink="/admin/moderation"
+         routerLinkActive="active"
+         class="menu-item">
+        <span>📦</span> Product Moderation
+      </a>
+
+      <a routerLink="/admin/auctions"
+         routerLinkActive="active"
+         class="menu-item">
+        <span>🔨</span> Auction Monitoring
+      </a>
+
+      <a routerLink="/admin/alerts"
+         routerLinkActive="active"
+         class="menu-item">
+        <span>⚠️</span> Suspicious Alerts
+      </a>
+
+      <a routerLink="/admin/analytics"
+         routerLinkActive="active"
+         class="menu-item">
+        <span>📈</span> Analytics
+      </a>
+
+    </nav>
+
+    <div class="sidebar-bottom">
+      <span>⚙️</span> Settings
+    </div>
+
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <header class="topbar">
+
+      <div>
+        <h2>Admin Dashboard</h2>
+        <p>Welcome back, {{ adminName }}!</p>
+      </div>
+
+      <div class="admin-profile">
+        <span class="notification">🔔</span>
+        <div class="avatar">A</div>
+
+        <div>
+          <h4>Admin</h4>
+          <small>Administrator</small>
+        </div>
+      </div>
+
+    </header>
+
+    <section class="dashboard-content">
+
+      <div class="page-heading">
+        <div>
+          <h1>Dashboard Overview</h1>
+          <p>Monitor your online auction marketplace.</p>
+        </div>
+
+        <span class="date-label">📅 November 2026</span>
+      </div>
+
+      <!-- Statistics Cards -->
+      <div class="stats-grid">
+
+        <div class="stat-card" *ngFor="let stat of stats">
+
+          <div class="stat-info">
+            <p>{{ stat.title }}</p>
+            <h2>{{ stat.value }}</h2>
+          </div>
+
+          <div class="stat-icon" [ngClass]="stat.color">
+            {{ stat.icon }}
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Recent Activities -->
+      <div class="activity-section">
+
+        <div class="section-header">
+          <div>
+            <h2>Recent Activities</h2>
+            <p>Latest marketplace activities</p>
+          </div>
+
+          <button class="view-btn">View All</button>
+        </div>
+
+        <div class="table-container">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Activity</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              <tr *ngFor="let activity of activities">
+
+                <td>{{ activity.user }}</td>
+                <td>{{ activity.activity }}</td>
+                <td>{{ activity.date }}</td>
+
+                <td>
+                  <span class="status"
+                        [ngClass]="activity.status.toLowerCase()">
+                    {{ activity.status }}
+                  </span>
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>

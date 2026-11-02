@@ -1,0 +1,94 @@
+
+<div class="analytics-page">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <h1>Analytics Dashboard</h1>
+      <p>Track marketplace performance and business insights.</p>
+    </div>
+
+    <span class="page-label">📈 Analytics Overview</span>
+  </div>
+
+  <!-- Statistics Cards -->
+  <div class="stats-grid">
+
+    <div class="stat-card" *ngFor="let stat of stats">
+
+      <div>
+        <p>{{ stat.title }}</p>
+        <h2>{{ stat.value }}</h2>
+      </div>
+
+      <div class="stat-icon" [ngClass]="stat.color">
+        {{ stat.icon }}
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Monthly Auction and Category Charts -->
+  <div class="charts-grid">
+
+    <div class="chart-card">
+
+      <div class="chart-heading">
+        <h2>Monthly Auctions</h2>
+        <p>Monthly auction activity overview</p>
+      </div>
+
+      <div class="chart-container">
+        <canvas #monthlyChart></canvas>
+      </div>
+
+    </div>
+
+    <div class="chart-card">
+
+      <div class="chart-heading">
+        <h2>Product Categories</h2>
+        <p>Products by category</p>
+      </div>
+
+      <div class="chart-container">
+        <canvas #categoryChart></canvas>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Payment and User Analytics -->
+  <div class="charts-grid">
+
+    <div class="chart-card">
+
+      <div class="chart-heading">
+        <h2>Payment Analytics</h2>
+        <p>Payment transaction status</p>
+      </div>
+
+      <div class="chart-container">
+        <canvas #paymentChart></canvas>
+      </div>
+
+    </div>
+
+    <div class="chart-card">
+
+      <div class="chart-heading">
+        <h2>User Analytics</h2>
+        <p>Buyers and sellers growth</p>
+      </div>
+
+      <div class="chart-container">
+        <canvas #userChart></canvas>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
